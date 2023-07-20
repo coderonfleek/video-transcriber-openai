@@ -66,12 +66,21 @@ app.post('/transcribe', upload.single('file'), async (req, res) => {
         fs.createReadStream(req.file.path),
         "whisper-1"
       )
-      res.send(transcription);
-    } catch(err) {
-      console.log("Bfore Error");
-      console.log(JSON.stringify(err));
-      console.log("Hey");
-      res.send(err);
+      console.log(transcription);
+      res.send(transcription.data);
+    } catch(error) {
+      
+      if(error.response){
+        
+        console.log(error.response.status);
+        console.log(error.response.data);
+
+        res.status(500).send(error.response.data);
+      }else{
+        console.log(error.message)
+        res.status(500).send(error.message);
+      }
+      
     }
   
 });
