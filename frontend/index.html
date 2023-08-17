@@ -5,6 +5,11 @@
     <title>Video Transcribing Tool</title>
     <!-- Import Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #transcribedText{
+            overflow: scroll;
+        }
+    </style>
 </head>
 <body>
     <div class="container py-5">
@@ -14,11 +19,11 @@
                 <video id="videoPreview" controls class="w-100"></video>
                 <h2 class="mt-4">Upload Video</h2>
                 <input type="file" id="videoUpload" class="form-control" />
-                <button type="button" class="btn btn-primary">Transcribe</button>
+                <button id="transcribeButton" type="button" class="btn btn-primary mt-2">Transcribe</button>
             </div>
             <div class="col-lg-6">
                 <h2>Transcribed Text</h2>
-                <textarea id="transcribedText" class="form-control" rows="10"></textarea>
+                <div id="transcribedText" class="border border-primary h-100"></div>
             </div>
         </div>
     </div>
@@ -28,38 +33,7 @@
 
     <!-- Custom JavaScript -->
     <script>
-        const videoUpload = document.getElementById('videoUpload');
-        const videoPreview = document.getElementById('videoPreview');
-        const transcribedText = document.getElementById('transcribedText');
-
-        videoUpload.addEventListener('change', async function(e) {
-            if (e.target.files && e.target.files.length > 0) {
-                let file = e.target.files[0];
-                let url = URL.createObjectURL(file);
-
-                videoPreview.src = url;
-
-                // You would need to set up your API to accept multipart/form-data for a file
-                let formData = new FormData();
-                formData.append('file', file);
-
-                try {
-                    let response = await axios.post('http://localhost:1330/transcribe', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    });
-
-                    // Handle success
-                    if (response.data) {
-                        transcribedText.value = response.data.text;
-                    }
-                } catch (error) {
-                    // Handle error
-                    console.error(error);
-                }
-            }
-        });
+        
     </script>
 </body>
 </html>
