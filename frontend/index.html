@@ -34,6 +34,49 @@
 
     <!-- Custom JavaScript -->
     <script>
+
+        const videoUpload = document.getElementById("videoUpload");
+        const videoPreview = document.getElementById("videoPreview");
+        const transcribedText = document.getElementById("transcribedText");
+        const transcribeButton = document.getElementById("transcribeButton");
+
+        let selectedFile;
+
+        videoUpload.addEventListener("change", async function(e){
+
+            if(e.target.files && e.target.files.length > 0){
+                selectedFile = e.target.files[0];
+
+                let selectedVideo = URL.createObjectURL(selectedFile);
+
+                videoPreview.src = selectedVideo;
+            }
+
+        });
+
+        async function transcribeVideo(file) {
+            
+            let formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                let response = await axios.post("BACKEND_URL", formData, {
+                    headers : {
+                        'Content-Type': "multipart/form-data"
+                    }
+                });
+
+                if(response.data){
+
+                }
+            } catch (error) {
+                console.log(error);
+
+                alert("Video Transcription Failed");
+            }
+        }
+
+        transcribeButton.addEventListener("click", transcribeVideo);
         
     </script>
 </body>
