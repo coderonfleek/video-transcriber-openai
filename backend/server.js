@@ -19,14 +19,24 @@ const openai = new OpenAI({
 })
 
 //Configure Multer
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./uploads")
     },
     filename: (req, file, cd) => {
         cb(null, file.fieldname + '-'+ Date.now() + path.extname(file.originalname))
     }
+}) */
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, './uploads/')
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
 })
+  
 
 const upload = multer({storage: storage});
 
@@ -36,6 +46,8 @@ app.get("/", (req, res) =>{
 })
 
 app.post("/transcribe", upload.single("file"), async (req, res) => {
+
+    console.log(req.file);
 
     try {
         const transcription = await openai.createTranscription(
