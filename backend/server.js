@@ -50,12 +50,12 @@ app.post("/transcribe", upload.single("file"), async (req, res) => {
     console.log(req.file);
 
     try {
-        const transcription = await openai.createTranscription(
-            fs.createReadStream(req.file.path),
-            "whisper-1"
-        )
+        const transcription = await openai.audio.transcriptions.create({
+            file: fs.createReadStream(req.file.path),
+            model: "whisper-1"
+        })
 
-        res.send(transcription.data)
+        res.send(transcription)
     } catch (error) {
 
         if(error.response){
