@@ -60,7 +60,7 @@
             formData.append('file', file);
 
             try {
-                let response = await axios.post("BACKEND_URL", formData, {
+                let response = await axios.post("http://localhost:1330/transcribe", formData, {
                     headers : {
                         'Content-Type': "multipart/form-data"
                     }
